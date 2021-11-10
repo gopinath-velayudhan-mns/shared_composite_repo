@@ -1,5 +1,5 @@
-# action.yml
-name: 'Hello World '
+# push_image.yml
+name: 'Push docker images'
 description: 'Greet someone'
 inputs:
   who-to-greet:  # id of input
