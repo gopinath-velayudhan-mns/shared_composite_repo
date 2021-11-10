@@ -31,8 +31,8 @@ runs:
     - id: random-number-generator
       run: echo "::set-output name=random-id::$(echo $RANDOM)"
       shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh
-      shell: bash
+    #- run: ${{ github.action_path }}/goodbye.sh
+    #  shell: bash
     - run: ls -lart
       shell: bash
     - run: docker images
