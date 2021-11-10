@@ -1,6 +1,6 @@
 # push_image.yml
 name: 'Push docker images'
-description: 'Greet someone'
+description: 'Pushing Docker image to Container Registry'
 inputs:
   who-to-greet:  # id of input
     required: true
