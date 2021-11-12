@@ -35,5 +35,7 @@ runs:
         mvn clean deploy -s settings.xml -Dazrepo.pat=${{inputs.az_artifact_repostory_pat}}
     - name: Unit_Test
       run : echo 'Unit_Testing - completed'
+      shell: bash
     - name: Test
       run : echo 'Testing - completed'
+      shell: bash 
