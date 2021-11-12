@@ -4,16 +4,21 @@ description: 'Building and Pushing Artifact to Azure Artifact Repository'
 inputs:
   pom_path:
     required: false
+    default: .
   pom_file_name:
     required: false
+    default: pom.xml
   build_tool:
     required: false
+    default: mvn
   settings_file_path:
     required: false
-  cr_servername:
-    required: true
+    default: .
+  settings_file_name:
+    required: false
+    default: settings.xml
   az_artifact_repository_pat:
-    required: true
+    required: false
   
 outputs:
   random-number:
@@ -30,17 +35,17 @@ runs:
     
     - name: Maven Build and Publish to Azure Artifacts
       run: |
-        mvn clean install
+        mvn clean install -f ./${{ inputs.pom_path }}/${{ inputs.pom_file_name }}
       shell: bash  
     
     - name: Unit_Test
       run : | 
         echo Running Unit Test 
-        mvn test 
+        mvn test -f ./${{ inputs.pom_path }}/${{ inputs.pom_file_name }}
       shell: bash
     
     - name: Deploy Artifact
       run : |
         echo 'Testing - completed'
-        mvn deploy -s settings.xml -Dazrepo.pat=${{ inputs.az_artifact_repository_pat }}
+        mvn deploy -s -f ./${{ inputs.settings_file_path }}/${{ inputs.settings_file_name }} -Dazrepo.pat=${{ inputs.az_artifact_repository_pat }} -f ./${{ inputs.pom_path }}/${{ inputs.pom_file_name }}
       shell: bash 
