@@ -1,0 +1,39 @@
+# ci_build.yml
+name: 'Build and push Artifact'
+description: 'Building and Pushing Artifact to Azure Artifact Repository'
+inputs:
+  pom_path:
+    required: false
+  pom_file_name:
+    required: false
+  build_tool:
+    required: false
+  settings_file_path:
+    required: false
+  cr_servername:
+    description: “server name of the ACR”
+    required: true
+  az_artifact_repository_pat:
+    description: “server name of the ACR”
+    required: true  
+  
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+    
+    
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello, You are Executing Composite action to Execute Build
+      shell: bash
+    - run: ls -lart
+      shell: bash
+    - name: Maven Build and Publish to Azure Artifacts
+      run: |
+        mvn clean deploy -s settings.xml -Dazrepo.pat=${{inputs.az_artifact_repostory_pat}}
+    - name: Unit_Test
+      run : echo 'Unit_Testing - completed'
+    - name: Test
+      run : echo 'Testing - completed'
