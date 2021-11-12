@@ -11,17 +11,14 @@ inputs:
   settings_file_path:
     required: false
   cr_servername:
-    description: “server name of the ACR”
     required: true
   az_artifact_repository_pat:
-    description: “server name of the ACR”
-    required: true  
+    required: true
   
 outputs:
   random-number:
     description: "Random number"
     value: ${{ steps.random-number-generator.outputs.random-id }}
-    
     
 runs:
   using: "composite"
@@ -30,13 +27,16 @@ runs:
       shell: bash
     - run: ls -lart
       shell: bash
+    
     - name: Maven Build and Publish to Azure Artifacts
       run: |
-        mvn clean deploy -s settings.xml -Dazrepo.pat=${{inputs.az_artifact_repostory_pat}}
+        mvn clean deploy -s settings.xml -Dazrepo.pat=${{ inputs.az_artifact_repository_pat }}
       shell: bash  
+    
     - name: Unit_Test
       run : echo 'Unit_Testing - completed'
       shell: bash
+    
     - name: Test
       run : echo 'Testing - completed'
       shell: bash 
