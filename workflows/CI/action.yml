@@ -33,6 +33,7 @@ runs:
     - name: Maven Build and Publish to Azure Artifacts
       run: |
         mvn clean deploy -s settings.xml -Dazrepo.pat=${{inputs.az_artifact_repostory_pat}}
+      shell: bash  
     - name: Unit_Test
       run : echo 'Unit_Testing - completed'
       shell: bash
