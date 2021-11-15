@@ -26,7 +26,6 @@ runs:
       run: echo SNYK token is provided running SNYK scan for the project
       shell: bash
     - name: Snyk SCA Scanning
-      continue-on-error: true
       run: |
         echo "----------Download Latest Snyk CLI-----------"
         curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.683.0/snyk-linux"
