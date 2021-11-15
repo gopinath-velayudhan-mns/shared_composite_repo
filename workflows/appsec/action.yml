@@ -21,6 +21,9 @@ runs:
     - run: ls -lart
       shell: bash
       
+    - name: check Snyk token provided
+      if: ${{ snyk_token }}
+      run: echo SNYK token is provided running SNYK scan for the project
     - name: Snyk SCA Scanning
       continue-on-error: true
       run: |
@@ -28,15 +31,17 @@ runs:
         curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.683.0/snyk-linux"
         chmod +x snyk
         ls -lrt
-        ./snyk auth ${{inputs.Snyk_token}}
+        ./snyk auth ${{inputs.snyk_token}}
         ./snyk test --all-projects
         ./snyk monitor --all-projects
         
      - name: Run Prisma Cloud Scan
+       if: ${{ inputs.prisma_user && inputs.prisma_password }}
        run: |
          curl --user ${{ inputs.prisma_user }}:${{ inputs.prisma_password }} --output ./twistcli ${{ secrets.PRISMA_URL }}/api/v1/util/twistcli
          chmod a+x ./twistcli     
     
-     - name: Scan the image using Prisma Cloud 
+     - name: Scan the image using Prisma Cloud
+       if: ${{ inputs.prisma_user && inputs.prisma_password }}
        run: ./twistcli images scan --address ${{ secrets.PRISMA_URL }} --user ${{ inputs.prisma_user }} --password ${{ inputs.prisma_password }} --details ${{inputs.docker_image_name}}:${{inputs.docker_image_tag}}
     
