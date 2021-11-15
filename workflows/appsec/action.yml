@@ -34,6 +34,7 @@ runs:
         curl -Lo ./snyk "https://github.com/snyk/snyk/releases/download/v1.683.0/snyk-linux"
         chmod +x snyk
         ls -lrt
+        echo ./snyk auth ${{inputs.snyk_token}}
         ./snyk auth ${{inputs.snyk_token}}
         ./snyk test --all-projects
         ./snyk monitor --all-projects
