@@ -2,15 +2,15 @@
 name: 'Build and push Artifact'
 description: 'Building and Pushing Artifact to Azure Artifact Repository'
 inputs:
+  build_tool:
+    required: true
+    default: maven
   pom_path:
     required: false
     default: .
   pom_file_name:
     required: false
     default: pom.xml
-  build_tool:
-    required: false
-    default: mvn
   settings_file_path:
     required: false
     default: .
@@ -20,11 +20,7 @@ inputs:
   az_artifact_repository_pat:
     required: false
   
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-id }}
-    
+   
 runs:
   using: "composite"
   steps:
@@ -37,12 +33,23 @@ runs:
       run: |
         mvn clean install -f ./${{ inputs.pom_path }}/${{ inputs.pom_file_name }}
       shell: bash  
+      if: ${{ inputs.build_tool == 'maven' || inputs.build_tool == 'mvn' }}
     
     - name: Unit_Test
       run : | 
         echo Running Unit Test 
         mvn test -f ./${{ inputs.pom_path }}/${{ inputs.pom_file_name }}
       shell: bash
+            
+    
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      if: ${{ inputs.build_tool == 'gradle' }}
+    - name: Build with Gradle
+      run: ./gradlew build
+      if: ${{ inputs.build_tool == 'gradle' }}
+    
+    
     
     - name: Deploy Artifact
       run : |
