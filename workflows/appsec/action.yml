@@ -22,7 +22,7 @@ runs:
       shell: bash
       
     - name: check Snyk token provided
-      if: ${{ snyk_token }}
+      if: ${{ inputs.snyk_token }}
       run: echo SNYK token is provided running SNYK scan for the project
       shell: bash
     - name: Snyk SCA Scanning
@@ -38,10 +38,10 @@ runs:
     - name: Run Prisma Cloud Scan
       if: ${{ inputs.prisma_user && inputs.prisma_password }}
       run: |
-        curl --user ${{ inputs.prisma_user }}:${{ inputs.prisma_password }} --output ./twistcli ${{ secrets.PRISMA_URL }}/api/v1/util/twistcli
+        curl --user ${{ inputs.prisma_user }}:${{ inputs.prisma_password }} --output ./twistcli ${{ inputs.prisma_url }}/api/v1/util/twistcli
         chmod a+x ./twistcli     
       shell: bash
     - name: Scan the image using Prisma Cloud
       if: ${{ inputs.prisma_user && inputs.prisma_password }}
-      run: ./twistcli images scan --address ${{ secrets.PRISMA_URL }} --user ${{ inputs.prisma_user }} --password ${{ inputs.prisma_password }} --details ${{inputs.docker_image_name}}:${{inputs.docker_image_tag}}
+      run: ./twistcli images scan --address ${{ inputs.prisma_url  }} --user ${{ inputs.prisma_user }} --password ${{ inputs.prisma_password }} --details ${{inputs.docker_image_name}}:${{inputs.docker_image_tag}}
       shell: bash
