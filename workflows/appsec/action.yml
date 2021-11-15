@@ -8,6 +8,9 @@ inputs:
     required: false
   prisma_password:
     required: false
+  prisma_url:
+    required: false
+  
   docker_image_name:
     required: false
   docker_image_tag:
