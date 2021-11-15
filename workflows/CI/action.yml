@@ -30,10 +30,11 @@ runs:
       shell: bash
     
     - name: Maven Build and Publish to Azure Artifacts
+      if: ${{ inputs.build_tool == 'maven' || inputs.build_tool == 'mvn' }}
       run: |
         mvn clean install -f ./${{ inputs.pom_path }}/${{ inputs.pom_file_name }}
       shell: bash  
-      if: ${{ inputs.build_tool == 'maven' || inputs.build_tool == 'mvn' }}
+      
     
     - name: Unit_Test
       run : | 
@@ -43,11 +44,14 @@ runs:
             
     
     - name: Validate Gradle wrapper
+      if: ${{ inputs.build_tool == 'gradle' }}
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
-      if: ${{ inputs.build_tool == 'gradle' }}
+      
     - name: Build with Gradle
-      run: ./gradlew build
       if: ${{ inputs.build_tool == 'gradle' }}
+      run: ./gradlew build
+      shell: bash
+      
     
     
     
