@@ -55,7 +55,7 @@ runs:
       shell: bash
       env:
         FOD_RELEASE_ID: 81683
-        FOD_PORTAL_URL: https://emea.fortify.com/
-        FOD_API_URL: https://api.emea.fortify.com/
+        FOD_PORTAL_URL: https://emea.fortify.com
+        FOD_API_URL: https://api.emea.fortify.com
       
             
