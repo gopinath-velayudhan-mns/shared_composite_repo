@@ -46,7 +46,7 @@ runs:
 
     - name: Upload and Scan
       run: |
-          java -jar FodUpload.jar -ac ${{ inputs.fod_api_key }} ${{ inputs.fod_api_secret }} -rid ${{ FOD_RELEASE_ID }} -purl ${{ FOD_PORTAL_URL }} -apiurl ${{ FOD_API_URL }} -z ${{inputs.project_name}}_fortify.zip -ep 2 -a 2 -rp 0 -pp 1 -apf -I 1    
+          java -jar FodUpload.jar -ac ${{ inputs.fod_api_key }} ${{ inputs.fod_api_secret }} -rid ${{ env.FOD_RELEASE_ID }} -purl ${{ env.FOD_PORTAL_URL }} -apiurl ${{ env.FOD_API_URL }} -z ${{inputs.project_name}}_fortify.zip -ep 2 -a 2 -rp 0 -pp 1 -apf -I 1    
           status=$?
           echo test $status
           if test $status -eq 1
