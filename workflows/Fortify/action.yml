@@ -36,13 +36,13 @@ runs:
          sudo wget -c https://github.com/fod-dev/fod-uploader-java/releases/download/v5.2.1/FodUpload.jar  
          pwd
          ls -lrt
-
+      shell: bash
     - name: Zip the source 
       run: |
          sudo apt install zip
          zip -r ${{inputs.project_name}}_fortify.zip .
          ls
-
+      shell: bash
 
     - name: Upload and Scan
       run: |
@@ -54,7 +54,7 @@ runs:
           echo "scan is successful"
           else
           exit 1 
-
+      shell: bash
 
       
             
