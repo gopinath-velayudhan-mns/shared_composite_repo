@@ -12,10 +12,7 @@ inputs:
     required: true
     default: ./src
 
-env:
-  FOD_RELEASE_ID: 81683
-  FOD_PORTAL_URL: https://emea.fortify.com/
-  FOD_API_URL: https://api.emea.fortify.com/
+
   
 runs:
   using: "composite"
@@ -46,6 +43,7 @@ runs:
 
     - name: Upload and Scan
       run: |
+          echo 
           java -jar FodUpload.jar -ac ${{ inputs.fod_api_key }} ${{ inputs.fod_api_secret }} -rid ${{ env.FOD_RELEASE_ID }} -purl ${{ env.FOD_PORTAL_URL }} -apiurl ${{ env.FOD_API_URL }} -z ${{inputs.project_name}}_fortify.zip -ep 2 -a 2 -rp 0 -pp 1 -apf -I 1    
           status=$?
           echo test $status
@@ -55,6 +53,9 @@ runs:
           else
           exit 1 
       shell: bash
-
+      env:
+        FOD_RELEASE_ID: 81683
+        FOD_PORTAL_URL: https://emea.fortify.com/
+        FOD_API_URL: https://api.emea.fortify.com/
       
             
