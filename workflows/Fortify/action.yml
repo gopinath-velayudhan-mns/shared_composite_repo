@@ -44,15 +44,9 @@ runs:
 
     - name: Upload and Scan
       run: |
-          echo 
           java -jar FodUpload.jar -ac ${{ inputs.fod_api_key }} ${{ inputs.fod_api_secret }} -rid ${{ inputs.fod_release_id }} -purl ${{ env.FOD_PORTAL_URL }} -apiurl ${{ env.FOD_API_URL }} -z ${{inputs.project_name}}_fortify.zip -ep 2 -a 2 -rp 0 -pp 1 -apf -I 1    
           status=$?
           echo test $status
-          if test $status -eq 1
-          then
-          echo "scan is successful"
-          else
-          exit 1 
       shell: bash
       env:
         FOD_PORTAL_URL: https://emea.fortify.com
