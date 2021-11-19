@@ -2,19 +2,31 @@
 name: 'DevSecOps Application Security Actions'
 description: 'Running Security Scans for project codes'
 inputs:
+  project_name:
+    required: true
+    
   snyk_token:
     required: true
+    
   prisma_user:
     required: false
   prisma_password:
     required: false
   prisma_url:
     required: false
-  
   docker_image_name:
     required: false
   docker_image_tag:
     required: false
+    
+  fod_release_id:
+    required: true
+  fod_api_key:
+    required: true
+  fod_api_secret:
+    required: true
+  
+     
     
 runs:
   using: "composite"
@@ -39,6 +51,40 @@ runs:
         ./snyk test --all-projects
         ./snyk monitor --all-projects
       shell: bash  
+      
+ 
+ 
+
+    - name: Fortify Scan : Create sorce Zip upload to FOD for Scanning
+      run: ls -lart
+      shell: bash
+    - name: Setup Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: wget FodUpload.jar 
+      run: |
+         sudo wget -c https://github.com/fod-dev/fod-uploader-java/releases/download/v5.2.1/FodUpload.jar  
+         pwd
+         ls -lrt
+      shell: bash
+    - name: Zip the source 
+      run: |
+         sudo apt install zip
+         zip -r ${{inputs.project_name}}_fortify.zip .
+         ls
+      shell: bash
+    - name: Upload and Scan
+      run: |
+          java -jar FodUpload.jar -ac ${{ inputs.fod_api_key }} ${{ inputs.fod_api_secret }} -rid ${{ inputs.fod_release_id }} -purl ${{ env.FOD_PORTAL_URL }} -apiurl ${{ env.FOD_API_URL }} -z ${{inputs.project_name}}_fortify.zip -ep 2 -a 2 -rp 0 -pp 1 -apf -I 1    
+      shell: bash
+      env:
+        FOD_PORTAL_URL: https://emea.fortify.com/
+        FOD_API_URL: https://api.emea.fortify.com/
+
+
+
+
     - name: Run Prisma Cloud Scan
       if: ${{ inputs.prisma_user && inputs.prisma_password }}
       run: |
