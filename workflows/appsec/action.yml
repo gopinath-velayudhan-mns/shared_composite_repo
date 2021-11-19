@@ -52,10 +52,9 @@ runs:
         ./snyk monitor --all-projects
       shell: bash  
       
- 
- 
+  
 
-    - name: Fortify Scan : Create sorce Zip upload to FOD for Scanning
+    - name: Fortify Scan Create sorce Zip upload to FOD for Scanning
       run: ls -lart
       shell: bash
     - name: Setup Java
