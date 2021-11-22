@@ -40,7 +40,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-      if: ${{run_snyk_scan == true &&  inputs.snyk_token }}
+    - run: echo  argument for run_snyk_scan = ${{inputs.run_snyk_scan}}
+      shell: bash
+      if: ${{inputs.run_snyk_scan == true &&  inputs.snyk_token }}
     - name: Snyk SCA Scanning
       run: |
         echo SNYK token is provided running SNYK scan for the project
@@ -55,14 +57,15 @@ runs:
       shell: bash  
       
   
-
+     - run: echo  argument for run_fortify_scan = ${{inputs.run_fortify_scan}}
+      shell: bash
     - name: Fortify Scan Create sorce Zip upload to FOD for Scanning
-      if: ${{run_fortify_scan == 'true' }}
+      if: ${{inputs.run_fortify_scan == true }}
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
     - name: Download fortify executable and run scan 
-      if: ${{run_fortify_scan == 'true' }}
+      if: ${{inputs.run_fortify_scan == true }}
       run: |
          sudo wget -c https://github.com/fod-dev/fod-uploader-java/releases/download/v5.2.1/FodUpload.jar  
          sudo apt install zip
