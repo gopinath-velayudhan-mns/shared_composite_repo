@@ -40,7 +40,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-      if: ${{run_snyk_scan == 'true' &&  inputs.snyk_token }}
+      if: ${{run_snyk_scan == true &&  inputs.snyk_token }}
     - name: Snyk SCA Scanning
       run: |
         echo SNYK token is provided running SNYK scan for the project
@@ -61,7 +61,7 @@ runs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: wget FodUpload.jar 
+    - name: Download fortify executable and run scan 
       if: ${{run_fortify_scan == 'true' }}
       run: |
          sudo wget -c https://github.com/fod-dev/fod-uploader-java/releases/download/v5.2.1/FodUpload.jar  
@@ -72,7 +72,7 @@ runs:
       env:
         FOD_PORTAL_URL: https://emea.fortify.com/
         FOD_API_URL: https://api.emea.fortify.com/
-
+      
 
     - name: Run Prisma Cloud Scan
       if: ${{ inputs.prisma_user && inputs.prisma_password }}
