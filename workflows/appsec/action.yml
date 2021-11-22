@@ -57,7 +57,7 @@ runs:
       shell: bash  
       
   
-     - run: echo  argument for run_fortify_scan = ${{inputs.run_fortify_scan}}
+    - run: echo  argument for run_fortify_scan = ${{inputs.run_fortify_scan}}
       shell: bash
     - name: Fortify Scan Create sorce Zip upload to FOD for Scanning
       if: ${{inputs.run_fortify_scan == true }}
