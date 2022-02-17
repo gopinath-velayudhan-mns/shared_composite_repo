@@ -21,7 +21,7 @@ inputs:
     required: false
  
 env:
-  baseline_version: @main 
+  baseline_version: '@main'
    
 runs:
   using: "composite"
