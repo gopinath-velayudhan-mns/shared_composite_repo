@@ -67,7 +67,7 @@ runs:
     - name: calling another composite action
       id: foo
       #uses: ../sample${{env.baseline_version}}
-      user: ./.github/workflows/sample
+      uses: ./.github/workflows/sample
       with:
         who-to-greet: 'Mona the Octocat'
     - run: echo random-number ${{ steps.foo.outputs.random-number }}
